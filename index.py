@@ -61,7 +61,7 @@ def add_condition():
     code = request.form.get("code")
     status = request.form.get("status")
 
-    if not condition or not from_source or not status:
+    if not description or not code or not status:
         return jsonify({"error": "Missing required fields"}), 400
     
     condition_data = {
@@ -115,7 +115,7 @@ def add_allergy():
     severity = request.form.get("severity")
 
 
-    if not allergy or not from_source or not status:
+    if not name or not type_ or not reaction or not severity:
         return jsonify({"error": "Missing required fields"}), 400
 
     allergy_data = {
@@ -174,7 +174,7 @@ def add_drug():
     start_date = request.form.get("start_date")
 
 
-    if not drug or not from_source or not status:
+    if not name or not dose or not frequency or not start_date:
         return jsonify({"error": "Missing required fields"}), 400
 
     drug_data = {
@@ -282,7 +282,7 @@ def delete_self_fact():
 def set_account():
     name = request.form.get("name")
     dob = request.form.get("dob")
-    gender = request.form.get("gender")
+    sex = request.form.get("sex")
 
     if not name or not dob or not gender:
         return jsonify({"error": "Missing required fields"}), 400
@@ -290,7 +290,7 @@ def set_account():
     account_data = {
         "name": name,
         "age": dob,
-        "sex": gender
+        "sex": sex
     }
 
     try:
