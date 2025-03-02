@@ -284,7 +284,7 @@ def set_account():
     dob = request.form.get("dob")
     sex = request.form.get("sex")
 
-    if not name or not dob or not gender:
+    if not name or not dob or not sex:
         return jsonify({"error": "Missing required fields"}), 400
 
     account_data = {
