@@ -12,6 +12,8 @@ import base64
 import re
 import os
 from groq import Groq
+from flask_cors import CORS
+
 # from google.cloud import firestore
 
 
@@ -19,6 +21,7 @@ load_dotenv()
 
 
 app = Flask(__name__)
+CORS(app)
 
 mindee_client = Client(api_key=os.getenv("ocr"))
 encoded_data = os.getenv("fb")
