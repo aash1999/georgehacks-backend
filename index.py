@@ -57,20 +57,20 @@ def upload_image():
 
 @app.route('/add_condition', methods=['POST'])
 def add_condition():
-    condition = request.form.get("condition")
-    from_source = request.form.get("from")
+    description = request.form.get("description")
+    code = request.form.get("code")
     status = request.form.get("status")
 
     if not condition or not from_source or not status:
         return jsonify({"error": "Missing required fields"}), 400
     
     condition_data = {
-        "condition": condition,
-        "from": from_source,
+        "description": description,
+        "code": code,
         "status": status
     }
     
-    db.collection("conditions").add(condition_data)
+    db.collection("diagnoses").add(condition_data)
     return jsonify({"message": "Medical condition added successfully", "data": condition_data})
 
 @app.route('/delete_condition', methods=['POST'])
@@ -81,7 +81,7 @@ def delete_condition():
         return jsonify({"error": "Condition ID is required"}), 400
 
     try:
-        condition_ref = db.collection("conditions").document(condition_id)
+        condition_ref = db.collection("diagnoses").document(condition_id)
         if not condition_ref.get().exists:
             return jsonify({"error": "Condition not found"}), 404
         
@@ -109,17 +109,20 @@ def get_conditions():
 
 @app.route('/add_allergy', methods=['POST'])
 def add_allergy():
-    allergy = request.form.get("allergy")
-    from_source = request.form.get("from")
-    status = request.form.get("status")
+    name = request.form.get("name")
+    type_ = request.form.get("type_")
+    reaction = request.form.get("reaction")
+    severity = request.form.get("severity")
+
 
     if not allergy or not from_source or not status:
         return jsonify({"error": "Missing required fields"}), 400
 
     allergy_data = {
-        "allergy": allergy,
-        "from": from_source,
-        "status": status
+        "name": name,
+        "type": type_,
+        "reaction": reaction,
+        "severity": severity
     }
 
     try:
@@ -165,21 +168,24 @@ def delete_allergy():
 
 @app.route('/add_drug', methods=['POST'])
 def add_drug():
-    drug = request.form.get("drug")
-    from_source = request.form.get("from")
-    status = request.form.get("status")
+    name = request.form.get("name")
+    dose = request.form.get("dose")
+    frequency = request.form.get("frequency")
+    start_date = request.form.get("start_date")
+
 
     if not drug or not from_source or not status:
         return jsonify({"error": "Missing required fields"}), 400
 
     drug_data = {
-        "drug": drug,
-        "from": from_source,
-        "status": status
+        "name": name,
+        "dose": dose,
+        "frequency": frequency,
+        "start_date":start_date
     }
 
     try:
-        db.collection("drugs").add(drug_data)
+        db.collection("medications").add(drug_data)
         return jsonify({"message": "Drug added successfully", "data": drug_data}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -188,7 +194,7 @@ def add_drug():
 @app.route('/get_drugs', methods=['GET'])
 def get_drugs():
     try:
-        drugs_ref = db.collection("drugs").stream()
+        drugs_ref = db.collection("medications").stream()
         drugs = []
 
         for doc in drugs_ref:
@@ -210,7 +216,7 @@ def delete_drug():
         return jsonify({"error": "Drug ID is required"}), 400
 
     try:
-        drug_ref = db.collection("drugs").document(drug_id)
+        drug_ref = db.collection("medications").document(drug_id)
         if not drug_ref.get().exists:
             return jsonify({"error": "Drug not found"}), 404
 
@@ -283,13 +289,13 @@ def set_account():
 
     account_data = {
         "name": name,
-        "dob": dob,
-        "gender": gender
+        "age": dob,
+        "sex": gender
     }
 
     try:
         # Always overwrite the single account document
-        db.collection("account").document("singleton").set(account_data)
+        db.collection("demographics").document("singleton").set(account_data)
         return jsonify({"message": "Account updated successfully", "data": account_data}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -298,7 +304,7 @@ def set_account():
 @app.route('/get_account', methods=['GET'])
 def get_account():
     try:
-        account_ref = db.collection("account").document("singleton").get()
+        account_ref = db.collection("demographics").document("singleton").get()
 
         if not account_ref.exists:
             return jsonify({"error": "Account not found"}), 404
