@@ -14,7 +14,7 @@ backend:
     # The package manager used by the backend.
     packageManager: pip
     # The runtime to use for your Flask app.
-    runtime: python3.13.x
+    runtime: python3.12.x
   # Information about the backend's functions.
   functions:
     # The name (label) of the function.

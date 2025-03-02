@@ -272,7 +272,7 @@ def delete_self_fact():
 
 
 
-@app.route('/g', methods=['POST'])
+@app.route('/set_account', methods=['POST'])
 def set_account():
     name = request.form.get("name")
     dob = request.form.get("dob")
@@ -312,3 +312,5 @@ def get_account():
 
 if __name__ == '__main__':
     app.run()
+
+#google-crc32c==1.6.0
