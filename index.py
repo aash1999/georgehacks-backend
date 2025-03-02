@@ -94,7 +94,7 @@ def delete_condition():
 @app.route('/get_conditions', methods=['GET'])
 def get_conditions():
     try:
-        conditions_ref = db.collection("conditions").stream()
+        conditions_ref = db.collection("diagnoses").stream()
         conditions = []
 
         for doc in conditions_ref:
